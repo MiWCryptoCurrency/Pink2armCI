@@ -2,7 +2,7 @@
 version: 2
 jobs:
   build:
-    working_directory: /Pink2
+    working_directory: /Pink2arm
     docker:
       - image: ubuntu:xenial
         environment:
@@ -42,6 +42,7 @@ jobs:
       - run:
           name: Build bdb4.8
           command: |
+                 cd /Pink2
                  cd src
                  mkdir -p $BDB_PREFIX
                  wget 'http://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz'
@@ -51,21 +52,9 @@ jobs:
                  ../dist/configure HOST=arm-linux-gnueabihf --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
                  make install
       - run:
-          name: Build qrencode
-          command: |
-                 cd src
-                 mkdir -p $QRENCODE_PREFIX
-                 wget 'https://fukuchi.org/works/qrencode/qrencode-3.4.4.tar.gz'
-                 echo 'e794e26a96019013c0e3665cb06b18992668f352c5553d0a553f5d144f7f2a72 qrencode-3.4.4.tar.gz' | sha256sum -c
-                 tar -xzvf qrencode-3.4.4.tar.gz
-                 cd qrencode-3.4.4
-
-                 ./configure --disable-shared --enable-static --without-tools --prefix=$QRENCODE_PREFIX
-                 make install
-
-      - run:
           name: Build openssl
           command: |
+                 cd /Pink2
                  cd src
                  mkdir -p $OPENSSL_PREFIX
                  wget 'https://www.openssl.org/source/openssl-1.0.2l.tar.gz'
@@ -78,6 +67,7 @@ jobs:
       - run:
           name: Build headless bin pink2d
           command: |
+                  cd /Pink2
                   cd src
                   make -j 2 -f makefile.unix STATIC=all USE_UPNP=1 USE_QRCODE=1 BDB_INCLUDE_PATH=$BDB_PREFIX/include BDB_LIB_PATH=$BDB_PREFIX/lib OPENSSL_LIB_PATH=$OPENSSL_PREFIX/lib OPENSSL_INCLUDE_PATH=$OPENSSL_PREFIX/include
       - run:
@@ -89,7 +79,7 @@ jobs:
           name: Tar artifacts
           command: |
                   mkdir /tmp/build/
-                  cp src/pink2d /tmp/build
+                  cp /Pink2/src/pink2d /tmp/build
                   tar cvfz /tmp/build/$BUILD_NAME.tar.gz .
       - store_artifacts:
           path: /tmp/build/
