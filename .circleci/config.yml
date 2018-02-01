@@ -36,6 +36,10 @@ jobs:
                   binutils-arm-linux-gnueabi \
                   g++-arm-linux-gnueabihf libncurses5-dev \
       - run:
+          name: Get pink2 source
+          command: |
+                  git clone https://github.com/Pink2Dev/Pink2
+      - run:
           name: Build bdb4.8
           command: |
                  cd src
