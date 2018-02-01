@@ -22,8 +22,7 @@ jobs:
                   apt-get update && apt-get install \
                   --no-install-recommends \
                   -y \
-                  qt5-default qt5-qmake qtbase5-dev-tools \
-                  qttools5-dev-tools build-essential libboost-dev \
+                  build-essential libboost-dev \
                   libboost-system-dev \
                   libboost-filesystem-dev \
                   libboost-program-options-dev \
@@ -31,6 +30,7 @@ jobs:
                   libdb++-dev \
                   libminiupnpc-dev \
                   wget \
+                  git \
                   ca-certificates \
                   libc6-armel-cross libc6-dev-armel-cross \
                   binutils-arm-linux-gnueabi \
@@ -38,7 +38,7 @@ jobs:
       - run:
           name: Get pink2 source
           command: |
-                  git clone https://github.com/Pink2Dev/Pink2
+                 git clone https://github.com/Pink2Dev/Pink2 /Pink2
       - run:
           name: Build bdb4.8
           command: |
